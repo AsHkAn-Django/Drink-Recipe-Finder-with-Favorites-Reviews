@@ -30,5 +30,5 @@ class SearchView(TemplateView):
                 response.raise_for_status()
                 drinks = response.json()['drinks']
             except:
-                drink = {"error": "Not Found!!! Try Something Else!"}
+                drinks = {"error": "Not Found!!! Try Something Else!"}
         return render(request, self.template_name, {'query': query, 'drinks': drinks})
