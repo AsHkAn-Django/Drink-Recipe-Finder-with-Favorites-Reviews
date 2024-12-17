@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="p-4 p-md-5 my-4 rounded text-body-emphasis heading-part">
+<div class="container col-xl-11 p-4 p-md-5 my-4 rounded text-body-emphasis heading-part">
     <div class="col-lg-6 px-0">
-      <h1 class="display-4 fst-italic">Get a Random Drink Recepie</h1>
-      <p class="lead my-3">Just by Clicking on the button, you can get a random drink recipe and all for free!</p>
-      <p class="lead mb-0"><a href="{% url 'index' %}" class="btn btn-outline-primary">Bring it!</a></p>
+      <h1 class="display-4 fst-italic text-dark">Get a Random Drink Recepie</h1>
+      <p class="lead my-3 text-dark">Just by Clicking on the button, you can get a random drink recipe and all for free!</p>
+      <p class="lead mb-0 text-dark"><a href="{% url 'index' %}" class="btn btn-outline-primary">Bring it!</a></p>
     </div>
   </div>
 
-<div class="container col-xxl-8 px-4 pt-2 pb-4 main-part">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-2">
-        <div class="col-10 col-sm-8 col-lg-6">
+<div class="container col-xl-11 px-4 pt-2 pb-4 main-part">
+    <div class="row flex-lg-row-reverse align-items-center py-2">
+        <div class="col-12 col-lg-6">
             <img src="{{ drink.strDrinkThumb }}" class="d-block mx-lg-auto img-fluid"
                  alt="{{ drink.strDrink }} pic" width="700"
                  height="500" loading="lazy">
         </div>
         <div class="col-lg-6 py-0">
-            <h5 class="display-5 lh-1 my-3 py-0 fw-bold">{{ drink.strDrink }}</h5>
-            <h5>Instructions</h5>
-            <p>{{ drink.strInstructions }}</p>
-            <h5>Category:</h5>
-            <p>{{ drink.strCategory }}</p>
-            <h5>Ingredients</h5>
+            <h5 class="display-5 lh-1 my-3 py-0 fw-bold text-dark">{{ drink.strDrink }}</h5>
+            <h5 class="text-dark">Instructions</h5>
+            <p class="text-dark">{{ drink.strInstructions }}</p>
+            <h5 class="text-dark">Category:</h5>
+            <p class="text-dark">{{ drink.strCategory }}</p>
+            <h5 class="text-dark">Ingredients</h5>
             <ul class="list-group">
                 {% if drink.strIngredient1 != None %}
                 <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure1 }}

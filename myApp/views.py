@@ -29,6 +29,8 @@ class SearchView(TemplateView):
                 response = requests.get(url)
                 response.raise_for_status()
                 drinks = response.json()['drinks']
+                if not drinks:  # Handle case where no drinks are found
+                    drinks = {"error": "No drinks found for this search!"}
             except:
-                drinks = {"error": "Not Found!!! Try Something Else!"}
+                drinks = {"error": "An Error happened!!! Try Another Time!"}
         return render(request, self.template_name, {'query': query, 'drinks': drinks})
