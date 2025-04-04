@@ -12,7 +12,7 @@ class Ingredient(models.Model):
 
 
 class Amount(models.Model):
-    amount = models.CharField(max_length=264, unique=True)
+    title = models.CharField(max_length=264, unique=True)
 
     def __str__(self):
         return self.title
@@ -26,13 +26,21 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
+    recipe_id = models.PositiveSmallIntegerField(unique=True)
     title = models.CharField(max_length=264)
     instruction = models.CharField(max_length=264)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='images/')    
+    # CHnaged the imagefield to URLField
+    picture_url = models.URLField()    
     ingredients = models.ManyToManyField(Ingredient, related_name='recipes_ingredient')
     amounts = models.ManyToManyField(Amount, related_name='recipes_amount')
 
+    class Meta:
+        # We don't want a user gives more thatn one rating to a movie
+        constraints = [
+            models.UniqueConstraint(fields=['recipe_id', 'title', 'instruction'], name='unique_recipe')
+        ]
+    
     def get_average_rating(self):
         ratings = self.ratings.all()
         if not ratings:
