@@ -5,34 +5,26 @@ from decimal import Decimal
 
 
 class Ingredient(models.Model):
-    title = models.CharField(max_length=264, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     
     def __str__(self):
-        return self.title
-
-
-class Amount(models.Model):
-    amount = models.CharField(max_length=264, unique=True)
-
-    def __str__(self):
-        return self.title
+        return self.name
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=264, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     
     def __str__(self):
-        return self.title
-
+        return self.name
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=264)
-    instruction = models.CharField(max_length=264)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='images/')    
-    ingredients = models.ManyToManyField(Ingredient, related_name='recipes_ingredient')
-    amounts = models.ManyToManyField(Amount, related_name='recipes_amount')
-
+    recipe_id = models.PositiveIntegerField(unique=True)  # From the API
+    title = models.CharField(max_length=255)
+    instructions = models.TextField()
+    picture_url = models.URLField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    
     def get_average_rating(self):
         ratings = self.ratings.all()
         if not ratings:
@@ -41,15 +33,31 @@ class Recipe(models.Model):
             total = sum(rating.rate for rating in ratings)            
         return Decimal(round(total / len(ratings), 1))
     
-    # TODO: Or a better wayyyyy: 
-    # from django.db.models import Avg
-    # from decimal import Decimal
-    # def get_average_rating(self):
-    #     avg_rating = self.ratings.aggregate(avg=Avg("rate"))["avg"]
-    #     return Decimal(round(avg_rating, 1)) if avg_rating is not None else Decimal("0.0")
-    
     def __str__(self):
         return self.title    
+    
+    
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    amount = models.CharField(max_length=100)  
+    order = models.PositiveIntegerField()  
+
+    class Meta:
+        unique_together = (('recipe', 'ingredient'),)
+        ordering = ['order']  # Ensure the default ordering by the order field
+
+    def __str__(self):
+        return f"{self.amount} {self.ingredient.name} in {self.recipe.title}"
+    
+    
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} added {self.recipe.title}"
     
 
 class Rating(models.Model):

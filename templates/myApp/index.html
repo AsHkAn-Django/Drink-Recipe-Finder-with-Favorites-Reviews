@@ -15,6 +15,7 @@
         <div class="col-12 col-lg-6 text-center">
             <img src="{{ drink.strDrinkThumb }}" class="d-block mx-auto img-fluid"
                  alt="{{ drink.strDrink }} pic" style="max-width: 100%; height: auto;" loading="lazy">
+                 <a href="{% url 'add_favorite' drink.idDrink %}" class="mt-5 btn btn-outline-danger">Add To Favorite</a>
         </div>
         <!-- Content Section -->
         <div class="col-lg-6 py-3">
