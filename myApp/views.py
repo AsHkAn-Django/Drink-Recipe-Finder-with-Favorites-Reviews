@@ -95,13 +95,9 @@ def add_to_favorite(request, pk):
             
             # add it to user's favorite    
             Favorite.objects.create(user=request.user, recipe=recipe)
-    return redirect('search')
+    return redirect('my_favorites')
 
 
 def my_favorites(request):
-    pass
-    # favorite_list = Favorite.objects.filter(user=request.user)
-    # for favorite in favorite_list:
-    #     favorite.combined = zip(favorite.recipe.amounts.all(), favorite.recipe.ingredients.all())
-    
-    # return render(request, 'myApp/my_favorites.html', {'favorites': favorite_list})
+    favorite_list = Favorite.objects.filter(user=request.user)  
+    return render(request, 'myApp/my_favorites.html', {'favorites': favorite_list})
