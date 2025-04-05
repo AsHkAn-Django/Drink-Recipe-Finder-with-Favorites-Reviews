@@ -1,4 +1,5 @@
 {% load static %}
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
             crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{% static 'myApp/css/base.css' %}"/>
+    {% bootstrap_css %}
 </head>
 <body>
 <header class="p-3 text-bg-dark">
@@ -19,7 +21,7 @@
         <div class="d-flex flex-wrap align-items-center justify-content-between">
             <!-- Navigation Links -->
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{% url 'index' %}" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="{% url 'index' %}" class="nav-link px-2 text-white">Home</a></li>
                 <li><a href="{% url 'search' %}" class="nav-link px-2 text-white">Search</a></li>
                 <li><a href="{% url 'my_favorites' %}" class="nav-link px-2 text-white">My Favorites</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
@@ -33,7 +35,7 @@
         </div>
     </div>
 </header>
-
+{% bootstrap_messages %}
 <div class="container my-3">{% block content %} {% endblock content %}</div>
 
 <footer class="container py-3 my-4">
@@ -44,7 +46,7 @@
         <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
     </ul>
-    <p class="text-center text-body-secondary">© 2024 Company, Inc</p>
+    <p class="text-center text-body-secondary">© {% now 'Y' %} By AsHkan~Ev3nT, Powered by <a href="https://www.thecocktaildb.com/api.php">TheCocktailDB</a></p>
 </footer>
 
 <script
@@ -52,5 +54,6 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous">
 </script>
+{% bootstrap_javascript %}
 </body>
 </html>

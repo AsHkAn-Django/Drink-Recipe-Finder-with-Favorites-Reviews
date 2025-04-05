@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 import requests
+from django.contrib import messages
 
 from .models import RecipeIngredient, Category, Recipe, Ingredient, Favorite, Rating
 
@@ -51,10 +52,18 @@ def add_to_favorite(request, pk):
     except:
         drink = {"error": "An Error happened!!! Try Another Time!"}
         
-    print(drink)
     if drink:
         if Recipe.objects.filter(recipe_id=drink['idDrink']).exists():
             print("we've already had this item in the database.")
+            recipe = get_object_or_404(Recipe,recipe_id=drink['idDrink'])
+            if Favorite.objects.filter(user=request.user, recipe=recipe).exists():
+                messages.warning(request, "You've already added this item before!")
+                return redirect('my_favorites')
+                
+            Favorite.objects.create(user=request.user, recipe=recipe)
+            messages.success(request, "Recipe has been added successfully")
+            return redirect('my_favorites')
+
         else:
             print("we don't have this drink in the database and we should add it.")
             # First we get or create the category            
@@ -95,9 +104,17 @@ def add_to_favorite(request, pk):
             
             # add it to user's favorite    
             Favorite.objects.create(user=request.user, recipe=recipe)
+    messages.success(request, "Recipe has been added successfully")
     return redirect('my_favorites')
 
 
 def my_favorites(request):
     favorite_list = Favorite.objects.filter(user=request.user)  
     return render(request, 'myApp/my_favorites.html', {'favorites': favorite_list})
+
+
+def delete_favorite(request, pk):
+    favorite = get_object_or_404(Favorite, pk=pk)
+    favorite.delete()
+    messages.success(request, "Recipe has been deleted successfully")
+    return redirect('my_favorites')
