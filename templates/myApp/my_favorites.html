@@ -1,46 +1,73 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="container p-4 p-md-5 my-4 rounded text-body-emphasis heading-part">
-    <div class="row">
-        <div class="col-lg-6 col-12 px-0">
-            <h1 class="display-4 fst-italic text-dark"><strong>{{user.username}}</strong>'s Favorite Recipes</h1>
-
-        </div>
+<div class="container my-4">
+  <!-- Page Heading -->
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-4 text-dark">
+        <strong>{{ user.username }}</strong>'s Favorite Recipes
+      </h1>
     </div>
-</div>
+  </div>
 
-{% if favorites %}
-{% for favorite in favorites %}
-<div class="container px-4 pt-2 pb-4 my-2 main-part">
-    <div class="row flex-lg-row-reverse align-items-center py-2">
-        <!-- Image Section -->
-        <div class="col-12 col-lg-6 mb-3 mb-lg-0 text-center">
-            <img src="{{favorite.recipe.picture_url}}" class="d-block mx-auto img-fluid rounded shadow-sm" alt="{{ drink.strDrink }} pic" width="700" height="500" loading="lazy">
-            <a href="{% url 'delete_favorite' favorite.pk %}" class="mt-5 btn btn-danger">Remove From Favorite</a>
-        </div>
-        <!-- Text Section -->
-        <div class="col-12 col-lg-6">
-            <h5 class="display-5 lh-1 my-3 fw-bold text-dark">{{ favorite.recipe.title }}</h5>
-            <h5 class="text-dark">Instructions</h5>
-            <p class="text-dark">{{ favorite.recipe.instructions }}</p>
-            <h5 class="text-dark">Category:</h5>
-            <p class="text-dark">{{ favorite.recipe.category }}</p>
-            <h5 class="text-dark">Ingredients</h5>
-            <ul class="list-group">
-                
-                {% for ingredient in favorite.recipe.recipe_ingredients.all %}
-                <li class="list-group-item text-bg-dark p-3">{{ ingredient.amount }} {{ ingredient.ingredient.name }}</li>
+  {% if favorites %}
+    {% for favorite in favorites %}
+    <div class="card mb-4 shadow-sm">
+      <div class="row g-0 align-items-center">
+        <!-- Image and Rating Section -->
+        <div class="col-lg-6 col-12 text-center p-3">
+          <img src="{{ favorite.recipe.picture_url }}" class="img-fluid rounded" alt="{{ favorite.recipe.title }} picture" width="700" height="500" loading="lazy">
 
-                {% endfor %}
-                    
+          <!-- Rating Box -->
+          <div class="rating-box p-3 mt-3 border rounded bg-light text-center">
+            <h4 class="mb-3">User Rating</h4>
+            <div class="rating-stars mb-2">
+              {% comment %} Loop through 5 stars {% endcomment %}
+              {% for i in "12345" %}
+                {% if favorite.recipe.get_average_rating >= forloop.counter %}
+                  <i class="fa fa-star text-warning"></i>
+                {% elif favorite.recipe.get_average_rating >= forloop.counter|add:"-0.5" %}
+                  <i class="fa fa-star-half-o text-warning"></i>
+                {% else %}
+                  <i class="fa fa-star-o text-warning"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p class="text-secondary mb-0">
+              <strong>{{ favorite.recipe.get_average_rating|floatformat:1 }}</strong> out of 5
+            </p>
+          </div>
         </div>
+
+        <!-- Recipe Details Section -->
+        <div class="col-lg-6 col-12 p-4">
+          <h3 class="fw-bold text-dark">{{ favorite.recipe.title }}</h3>
+          <hr>
+          <h5 class="text-dark">Instructions:</h5>
+          <p class="text-dark">{{ favorite.recipe.instructions }}</p>
+          <h5 class="text-dark">Category:</h5>
+          <p class="text-dark">{{ favorite.recipe.category }}</p>
+          <h5 class="text-dark">Ingredients:</h5>
+          <ul class="list-group mb-3">
+            {% for ingredient in favorite.recipe.recipe_ingredients.all %}
+              <li class="list-group-item bg-dark text-light py-2">
+                {{ ingredient.amount }} {{ ingredient.ingredient.name }}
+              </li>
+            {% endfor %}
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="{% url 'rating_form' favorite.recipe_id %}" class="btn btn-primary">Rate This Recipe</a>
+            <a href="{% url 'delete_favorite' favorite.pk %}" class="btn btn-danger">Remove From Favorites</a>
+          </div>
+        </div>
+      </div>
     </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-info">
+      <p>You don't have anything in your favorite list.</p>
+    </div>
+  {% endif %}
 </div>
-{% endfor %}
-{% else %}
-    <p>You don't have anything in your favorite list.</p>
-{% endif %}
-
 {% endblock content %}

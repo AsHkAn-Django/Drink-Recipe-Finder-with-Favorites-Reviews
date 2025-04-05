@@ -9,53 +9,57 @@
     </div>
 </div>
 
-<div class="container col-xl-11 px-4 pt-2 pb-4 main-part">
-    <div class="row flex-lg-row-reverse align-items-center py-2">
-        <!-- Image Section -->
-        <div class="col-12 col-lg-6 text-center">
-            <img src="{{ drink.strDrinkThumb }}" class="d-block mx-auto img-fluid"
-                 alt="{{ drink.strDrink }} pic" style="max-width: 100%; height: auto;" loading="lazy">
-                 <a href="{% url 'add_favorite' drink.idDrink %}" class="mt-5 btn btn-success">Add To Favorite</a>
-        </div>
-        <!-- Content Section -->
-        <div class="col-lg-6 py-3">
-            <h5 class="display-5 lh-1 my-3 py-0 fw-bold text-dark">{{ drink.strDrink }}</h5>
-            <h5 class="text-dark">Instructions</h5>
-            <p class="text-dark">{{ drink.strInstructions }}</p>
-            <h5 class="text-dark">Category:</h5>
-            <p class="text-dark">{{ drink.strCategory }}</p>
-            <h5 class="text-dark">Ingredients</h5>
-            <ul class="list-group">
-                {% if drink.strIngredient1 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure1 }} {{ drink.strIngredient1 }}</li>
-                {% endif %}
-                {% if drink.strIngredient2 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure2 }} {{ drink.strIngredient2 }}</li>
-                {% endif %}
-                {% if drink.strIngredient3 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure3 }} {{ drink.strIngredient3 }}</li>
-                {% endif %}
-                {% if drink.strIngredient4 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure4 }} {{ drink.strIngredient4 }}</li>
-                {% endif %}
-                {% if drink.strIngredient5 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure5 }} {{ drink.strIngredient5 }}</li>
-                {% endif %}
-                {% if drink.strIngredient6 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure6 }} {{ drink.strIngredient6 }}</li>
-                {% endif %}
-                {% if drink.strIngredient7 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure7 }} {{ drink.strIngredient7 }}</li>
-                {% endif %}
-                {% if drink.strIngredient8 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure8 }} {{ drink.strIngredient8 }}</li>
-                {% endif %}
-                {% if drink.strIngredient9 != None %}
-                <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure9 }} {{ drink.strIngredient9 }}</li>
-                {% endif %}
-            </ul>
+
+{% if drink %}
+
+    <div class="container col-xl-11 px-4 pt-2 pb-4 main-part">
+        <div class="row flex-lg-row-reverse align-items-center py-2">
+            <!-- Image Section -->
+            <div class="col-12 col-lg-6 text-center">
+                <img src="{{ drink.strDrinkThumb }}" class="d-block mx-auto img-fluid"
+                    alt="{{ drink.strDrink }} pic" style="max-width: 100%; height: auto;" loading="lazy">
+                    <a href="{% url 'add_favorite' drink.idDrink %}" class="mt-5 btn btn-success">Add To Favorite</a>
+            </div>
+            <!-- Content Section -->
+            <div class="col-lg-6 py-3">
+                <h5 class="display-5 lh-1 my-3 py-0 fw-bold text-dark">{{ drink.strDrink }}</h5>
+                <h5 class="text-dark">Instructions</h5>
+                <p class="text-dark">{{ drink.strInstructions }}</p>
+                <h5 class="text-dark">Category:</h5>
+                <p class="text-dark">{{ drink.strCategory }}</p>
+                <h5 class="text-dark">Ingredients</h5>
+                <ul class="list-group">
+                    {% if drink.strIngredient1 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure1 }} {{ drink.strIngredient1 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient2 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure2 }} {{ drink.strIngredient2 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient3 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure3 }} {{ drink.strIngredient3 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient4 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure4 }} {{ drink.strIngredient4 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient5 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure5 }} {{ drink.strIngredient5 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient6 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure6 }} {{ drink.strIngredient6 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient7 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure7 }} {{ drink.strIngredient7 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient8 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure8 }} {{ drink.strIngredient8 }}</li>
+                    {% endif %}
+                    {% if drink.strIngredient9 != None %}
+                    <li class="list-group-item text-bg-dark p-3">{{ drink.strMeasure9 }} {{ drink.strIngredient9 }}</li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-
+{% endif %}
+    
 {% endblock content %}

@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import generic
 import requests
 from django.contrib import messages
 
 from .models import RecipeIngredient, Category, Recipe, Ingredient, Favorite, Rating
+from .forms import RatingForm
 
 
 
@@ -13,11 +15,15 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        response = requests.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
-        response.raise_for_status()
-        drink = response.json()
-        context['drink'] = drink['drinks'][0]
-        return context
+        try:
+            response = requests.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+            response.raise_for_status()
+            drink = response.json()
+            context['drink'] = drink['drinks'][0]
+        except:
+            messages.warning(self.request, "There is a problem with the internet, please try again later.")
+            context['drink'] = None
+            return context
 
 
 class SearchView(generic.TemplateView):
@@ -118,3 +124,34 @@ def delete_favorite(request, pk):
     favorite.delete()
     messages.success(request, "Recipe has been deleted successfully")
     return redirect('my_favorites')
+
+
+class RatingFormView(generic.FormView):
+    model = Rating
+    form_class = RatingForm
+    success_url = reverse_lazy('my_favorites')
+    template_name = "myApp/rating_form.html"
+      
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        print(pk)
+        context['recipe'] = get_object_or_404(Recipe, pk=pk)
+        print(context['recipe'])
+        return context
+
+    def form_valid(self, form):
+        pk = self.kwargs.get('pk')
+        print(pk)
+
+        recipe = get_object_or_404(Recipe, pk=pk)
+        # Update if exists, or create a new entry
+        rating, created = Rating.objects.update_or_create(
+            recipe=recipe, user=self.request.user,
+            defaults={'rate': form.cleaned_data['rate']}  
+        )
+        if created:
+            messages.success(self.request, "Rating added successfully!")
+        else:
+            messages.success(self.request, "Rating updated successfully!")
+        return redirect('my_favorites')

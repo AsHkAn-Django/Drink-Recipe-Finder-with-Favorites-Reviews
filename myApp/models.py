@@ -67,5 +67,12 @@ class Rating(models.Model):
     date = models.DateTimeField(auto_now=True)
     review = models.CharField(max_length=250, null=True, blank=True)
     
+    class Meta:
+        # We don't want a user gives more than one rating to a recipe
+        constraints = [
+            models.UniqueConstraint(fields=['recipe', 'user'], name='unique_recipe_user_rating')
+        ]
     def __str__(self):
         return f"{self.user.username} rateed {self.rate} to {self.recipe.title}" 
+
+
