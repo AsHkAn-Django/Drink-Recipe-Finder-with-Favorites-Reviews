@@ -23,7 +23,7 @@ class IndexView(generic.TemplateView):
         except:
             messages.warning(self.request, "There is a problem with the internet, please try again later.")
             context['drink'] = None
-            return context
+        return context
 
 
 class SearchView(generic.TemplateView):
@@ -155,3 +155,12 @@ class RatingFormView(generic.FormView):
         else:
             messages.success(self.request, "Rating updated successfully!")
         return redirect('my_favorites')
+    
+    
+class MyFavoriteDetailView(generic.DetailView):
+    model = Favorite
+    template_name = "myApp/detail_favorite.html"
+    
+
+    
+    

@@ -33,6 +33,9 @@ class Recipe(models.Model):
             total = sum(rating.rate for rating in ratings)            
         return Decimal(round(total / len(ratings), 1))
     
+    def get_rates_number(self):
+        return len(self.ratings.all())
+    
     def __str__(self):
         return self.title    
     
@@ -74,5 +77,7 @@ class Rating(models.Model):
         ]
     def __str__(self):
         return f"{self.user.username} rateed {self.rate} to {self.recipe.title}" 
+
+
 
 
