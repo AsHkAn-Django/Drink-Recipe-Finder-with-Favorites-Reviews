@@ -1,20 +1,21 @@
--i https://pypi.org/simple
-asgiref==3.8.1; python_version >= '3.8'
-certifi==2024.12.14; python_version >= '3.6'
-charset-normalizer==3.4.0; python_full_version >= '3.7.0'
+asgiref==3.8.1
+certifi==2024.12.14
+charset-normalizer==3.4.0
 dj-database-url==2.3.0
-django==5.1.4; python_version >= '3.10'
-django-environ==0.11.2; python_version >= '3.6' and python_version < '4'
-environs==11.2.1; python_version >= '3.8'
-gunicorn==23.0.0; python_version >= '3.7'
-idna==3.10; python_version >= '3.6'
-marshmallow==3.23.1; python_version >= '3.9'
-packaging==24.2; python_version >= '3.8'
-psycopg2-binary==2.9.10; python_version >= '3.8'
-python-dotenv==1.0.1; python_version >= '3.8'
-requests==2.32.3; python_version >= '3.8'
-sqlparse==0.5.3; python_version >= '3.8'
-typing-extensions==4.12.2; python_version >= '3.8'
-tzdata==2024.2; sys_platform == 'win32'
-urllib3==2.2.3; python_version >= '3.8'
-whitenoise==6.8.2; python_version >= '3.9'
+Django==5.1.4
+django-bootstrap5==25.1
+django-environ==0.11.2
+environs==11.2.1
+gunicorn==23.0.0
+idna==3.10
+marshmallow==3.23.1
+packaging==24.2
+pillow==11.1.0
+psycopg2-binary==2.9.10
+python-dotenv==1.0.1
+requests==2.32.3
+sqlparse==0.5.3
+typing_extensions==4.12.2
+tzdata==2024.2
+urllib3==2.2.3
+whitenoise==6.8.2
