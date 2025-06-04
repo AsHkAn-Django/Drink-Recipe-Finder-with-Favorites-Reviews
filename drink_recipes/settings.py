@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
 
     'myApp',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,7 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Path where media files are stored
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = 'myApp:index'
+LOGOUT_REDIRECT_URL = 'myApp:index'

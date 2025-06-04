@@ -64,11 +64,11 @@ def add_to_favorite(request, pk):
             recipe = get_object_or_404(Recipe,recipe_id=drink['idDrink'])
             if Favorite.objects.filter(user=request.user, recipe=recipe).exists():
                 messages.warning(request, "You've already added this item before!")
-                return redirect('my_favorites')
+                return redirect('myApp:my_favorites')
                 
             Favorite.objects.create(user=request.user, recipe=recipe)
             messages.success(request, "Recipe has been added successfully")
-            return redirect('my_favorites')
+            return redirect('myApp:my_favorites')
 
         else:
             print("we don't have this drink in the database and we should add it.")
@@ -111,7 +111,7 @@ def add_to_favorite(request, pk):
             # add it to user's favorite    
             Favorite.objects.create(user=request.user, recipe=recipe)
     messages.success(request, "Recipe has been added successfully")
-    return redirect('my_favorites')
+    return redirect('myApp:my_favorites')
 
 
 def my_favorites(request):
@@ -123,7 +123,7 @@ def delete_favorite(request, pk):
     favorite = get_object_or_404(Favorite, pk=pk)
     favorite.delete()
     messages.success(request, "Recipe has been deleted successfully")
-    return redirect('my_favorites')
+    return redirect('myApp:my_favorites')
 
 
 class RatingFormView(generic.FormView):
@@ -154,7 +154,7 @@ class RatingFormView(generic.FormView):
             messages.success(self.request, "Rating added successfully!")
         else:
             messages.success(self.request, "Rating updated successfully!")
-        return redirect('my_favorites')
+        return redirect('myApp:my_favorites')
     
     
 class MyFavoriteDetailView(generic.DetailView):

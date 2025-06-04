@@ -53,8 +53,8 @@
           {% endfor %}
         </ul>
         <div class="d-flex gap-2">
-          <a href="{% url 'rating_form' favorite.recipe_id %}" class="btn btn-primary">Rate This Recipe</a>
-          <a href="{% url 'delete_favorite' favorite.pk %}" class="btn btn-danger">Remove From Favorites</a>
+          <a href="{% url 'myApp:rating_form' favorite.recipe_id %}" class="btn btn-primary">Rate This Recipe</a>
+          <a href="{% url 'myApp:delete_favorite' favorite.pk %}" class="btn btn-danger">Remove From Favorites</a>
         </div>
       </div>
     </div>

@@ -22,7 +22,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myApp.urls'))
+    path('accounts/', include('users.urls', namespace='users')),
+    path('', include('myApp.urls', namespace='myApp'))
 ]
 
 # check if debug is true(for local works not production) then handle the media files
