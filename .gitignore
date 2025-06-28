@@ -1,3 +1,13 @@
+# added by ashkan
+TODOLIST.md
+*migrations/
+/staticfiles/
+*.Zone.Identifier
+*:.Zone.Identifier
+dump.rdb
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -5,6 +15,9 @@ __pycache__/
 
 # C extensions
 *.so
+
+# media
+media/
 
 # Distribution / packaging
 .Python
