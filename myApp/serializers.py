@@ -46,7 +46,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['recipe_id', 'title', 'instructions', 'picture_url', 'is_my_favorite', 'number_of_rates', 'average_rate', 'category', 'recipe_ingredients', 'ratings']
+        fields = ['id', 'recipe_id', 'title', 'instructions', 'picture_url', 'is_my_favorite', 'number_of_rates', 'average_rate', 'category', 'recipe_ingredients', 'ratings']
 
     def get_average_rate(self, obj):
         return obj.get_average_rating()
