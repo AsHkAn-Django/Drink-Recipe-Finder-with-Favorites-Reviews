@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 
 
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -16,6 +17,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Recipe(models.Model):
     recipe_id = models.PositiveIntegerField(unique=True)  # From the API

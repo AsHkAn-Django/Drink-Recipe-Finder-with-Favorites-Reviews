@@ -60,3 +60,9 @@ class RecipeSerializer(serializers.ModelSerializer):
             return obj.favorites.filter(user=user).exists()
         return False
 
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Favorite
+        fields = ['id', 'user', 'recipe', 'created_at']
