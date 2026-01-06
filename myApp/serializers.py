@@ -6,14 +6,14 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ["id", "name"]
 
 
 class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ['id', 'name']
+        fields = ["id", "name"]
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeIngredient
-        fields = ['id', 'ingredient', 'amount']
+        fields = ["id", "ingredient", "amount"]
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields = ['id', 'rate', 'user', 'username', 'date', 'review']
+        fields = ["id", "rate", "user", "username", "date", "review"]
 
     def get_username(self, obj):
         return obj.user.username
@@ -37,7 +37,8 @@ class RatingSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
-    # recipe_ingredients is the related_name for recipe foreinkey in RecipeIngredient Model
+    # recipe_ingredients is the related_name for
+    # recipe foreinkey in RecipeIngredient Model
     recipe_ingredients = RecipeIngredientSerializer(many=True, read_only=True)
     ratings = RatingSerializer(read_only=True, many=True)
     average_rate = serializers.SerializerMethodField()
@@ -46,7 +47,19 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'recipe_id', 'title', 'instructions', 'picture_url', 'is_my_favorite', 'number_of_rates', 'average_rate', 'category', 'recipe_ingredients', 'ratings']
+        fields = [
+            "id",
+            "recipe_id",
+            "title",
+            "instructions",
+            "picture_url",
+            "is_my_favorite",
+            "number_of_rates",
+            "average_rate",
+            "category",
+            "recipe_ingredients",
+            "ratings",
+        ]
 
     def get_average_rate(self, obj):
         return obj.get_average_rating()
@@ -55,7 +68,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return obj.get_rates_number()
 
     def get_is_my_favorite(self, obj):
-        user = self.context.get('request').user
+        user = self.context.get("request").user
         if user.is_authenticated:
             return obj.favorites.filter(user=user).exists()
         return False
@@ -65,4 +78,4 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = ['id', 'user', 'recipe', 'created_at']
+        fields = ["id", "user", "recipe", "created_at"]

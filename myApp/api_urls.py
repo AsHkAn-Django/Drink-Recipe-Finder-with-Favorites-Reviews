@@ -3,11 +3,11 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 
-app_name = 'myApp'
+app_name = "myApp"
 
 router = DefaultRouter()
-router.register(r'recipes', api_views.RecipeViewset, basename='recipes')
+router.register(r"recipes", api_views.RecipeViewset, basename="recipes")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

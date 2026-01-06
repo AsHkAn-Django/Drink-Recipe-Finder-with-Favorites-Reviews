@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -21,10 +22,10 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('users.urls', namespace='users')),
-    path('api/v1/', include('myApp.api_urls', namespace='api')),
-    path('', include('myApp.urls', namespace='myApp'))
+    path("admin/", admin.site.urls),
+    path("accounts/", include("users.urls", namespace="users")),
+    path("api/v1/", include("myApp.api_urls", namespace="api")),
+    path("", include("myApp.urls", namespace="myApp")),
 ]
 
 # check if debug is true(for local works not production) then handle the media files

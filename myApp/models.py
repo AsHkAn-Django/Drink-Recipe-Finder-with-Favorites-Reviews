@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 
 
-
 class Ingredient(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -24,13 +23,15 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     instructions = models.TextField()
     picture_url = models.URLField()
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient")
 
     def get_average_rating(self):
         ratings = self.ratings.all()
         if not ratings:
-            return Decimal('0.0')
+            return Decimal("0.0")
         else:
             total = sum(rating.rate for rating in ratings)
         return Decimal(round(total / len(ratings), 1))
@@ -43,14 +44,16 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name="recipe_ingredients"
+    )
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.CharField(max_length=100)
     order = models.PositiveIntegerField()
 
     class Meta:
-        unique_together = (('recipe', 'ingredient'),)
-        ordering = ['order']  # Ensure the default ordering by the order field
+        unique_together = (("recipe", "ingredient"),)
+        ordering = ["order"]  # Ensure the default ordering by the order field
 
     def __str__(self):
         return f"{self.amount} {self.ingredient.name} in {self.recipe.title}"
@@ -58,7 +61,9 @@ class RecipeIngredient(models.Model):
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name="favorites"
+    )
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -66,20 +71,23 @@ class Favorite(models.Model):
 
 
 class Rating(models.Model):
-    rate = models.DecimalField(max_digits=2, decimal_places=1, validators=[MaxValueValidator(Decimal(5.0)), MinValueValidator(Decimal(1.0))])
+    rate = models.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        validators=[MaxValueValidator(Decimal(5.0)), MinValueValidator(Decimal(1.0))],
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ratings')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ratings")
     date = models.DateTimeField(auto_now=True)
     review = models.CharField(max_length=250, null=True, blank=True)
 
     class Meta:
         # We don't want a user gives more than one rating to a recipe
         constraints = [
-            models.UniqueConstraint(fields=['recipe', 'user'], name='unique_recipe_user_rating')
+            models.UniqueConstraint(
+                fields=["recipe", "user"], name="unique_recipe_user_rating"
+            )
         ]
+
     def __str__(self):
         return f"{self.user.username} rateed {self.rate} to {self.recipe.title}"
-
-
-
-

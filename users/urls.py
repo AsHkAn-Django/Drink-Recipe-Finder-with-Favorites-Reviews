@@ -2,9 +2,9 @@ from . import views
 from django.urls import path, include
 
 
-app_name = 'users'
+app_name = "users"
 
 urlpatterns = [
-    path('', include("django.contrib.auth.urls")),
-    path('signup/', views.UserCreateView.as_view(), name='signup'),
+    path("", include("django.contrib.auth.urls")),
+    path("signup/", views.UserCreateView.as_view(), name="signup"),
 ]
