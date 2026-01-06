@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 
 
 class RecipeViewset(viewsets.ModelViewSet):
-    queryset = Recipe.objects.all()
+    queryset = Recipe.objects.all().order_by("id")
     serializer_class = RecipeSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "ingredients__name"]
