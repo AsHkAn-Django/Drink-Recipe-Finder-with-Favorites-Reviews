@@ -34,7 +34,6 @@ jobs:
 
       - name: Run Tests
         env:
-          # CHANGE THIS: Match your actual project name folder
           DJANGO_SETTINGS_MODULE: drink_recipes.settings
           SECRET_KEY: "dummy-secret-for-tests"
           DEBUG: "True"
@@ -58,8 +57,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            # CHANGE THIS: This must match the folder name on your VPS
-            cd /home/cocktails
+            cd /home/drink_recipes
 
             # Pull latest code
             git checkout .
@@ -72,6 +70,7 @@ jobs:
             docker compose up -d --build
 
             # Run Migrations & Static Files
+            # We use -T to avoid "input device is not a TTY" errors in automation
             docker compose exec -T web python manage.py migrate
             docker compose exec -T web python manage.py collectstatic --noinput
 

@@ -19,6 +19,12 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://drink-recipes.codewithashkan.com",
+    "https://www.drink-recipes.codewithashkan.com",
+    "http://123.456.78.90",
+]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
