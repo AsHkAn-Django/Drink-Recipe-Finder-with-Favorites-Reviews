@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 import requests
 from django.contrib import messages
+from django.core.cache import cache
 
 from .models import RecipeIngredient, Category, Recipe, Ingredient, Favorite, Rating
 from .forms import RatingForm
@@ -14,19 +15,26 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            response = requests.get(
-                "https://www.thecocktaildb.com/api/json/v1/1/random.php"
-            )
-            response.raise_for_status()
-            drink = response.json()
-            context["drink"] = drink["drinks"][0]
-        except:  # noqa
-            messages.warning(
-                self.request,
-                "There is a problem with the internet, please try again later.",
-            )
-            context["drink"] = None
+
+        # Look for 'random_drink' in the cache
+        drink = cache.get("random_drink")
+
+        if not drink:
+            try:
+                response = requests.get(
+                    "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+                )
+                response.raise_for_status()
+                data = response.json()
+                drink = data["drinks"][0]
+
+                # Store it for 5 minutes (300 seconds)
+                cache.set("random_drink", drink, 300)
+            except Exception:
+                messages.warning(self.request, "Check your internet connection.")
+                drink = None
+
+        context["drink"] = drink
         return context
 
 
@@ -38,15 +46,27 @@ class SearchView(generic.TemplateView):
         drinks = None
 
         if query:
-            url = f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={query}"
-            try:
-                response = requests.get(url)
-                response.raise_for_status()
-                drinks = response.json()["drinks"]
-                if not drinks:  # Handle case where no drinks are found
-                    drinks = {"error": "No drinks found for this search!"}
-            except:  # noqa
-                drinks = {"error": "An Error happened!!! Try Another Time!"}
+            # Create a unique key for every search term
+            cache_key = f"search_res_{query.lower().strip()}"
+            drinks = cache.get(cache_key)
+
+            if not drinks:
+                url = (
+                    f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={query}"
+                )
+                try:
+                    response = requests.get(url)
+                    response.raise_for_status()
+                    drinks = response.json().get("drinks")
+
+                    if drinks:
+                        # Cache successful search results for 1 hour
+                        cache.set(cache_key, drinks, 3600)
+                    else:
+                        drinks = {"error": "No drinks found!"}
+                except Exception:
+                    drinks = {"error": "API Error!"}
+
         return render(request, self.template_name, {"query": query, "drinks": drinks})
 
 

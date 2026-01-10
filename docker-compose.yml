@@ -2,7 +2,10 @@ services:
   web:
     build: .
     container_name: cocktail_web
-    command: gunicorn drink_recipes.wsgi:application --bind 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createcachetable &&
+             gunicorn drink_recipes.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
